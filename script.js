@@ -21,15 +21,30 @@ var wordArray = ["apple", "blue", "cat", "dance", "elephant",
 var randomIndex
 var letters=0
 var wordCount=0;
-var secondNumber=59;
+var secondNumber=60;
 var second=secondNumber;
 var timer
-counter.textContent=`0:${second}`
+var munite=0
+if(second>=60)
+    munite=parseInt(second/60)
+else
+    munite=0
+if((second-munite*60)<10)
+    counter.textContent=`${munite}:0${second-munite*60}`
+else
+    counter.textContent=`${munite}:${second-munite*60}`
 function counterLoopFunction(){
     if(second>0)
-        timer = setTimeout(counterLoopFunction,1000);
-    counter.textContent=`0:${second}`
-    second--;
+        timer = setTimeout(counterLoopFunction,1000)
+    if(second>=60)
+        munite=parseInt(second/60)
+    else
+        munite=0
+    if((second-munite*60)<10)
+        counter.textContent=`${munite}:0${second-munite*60}`
+    else
+        counter.textContent=`${munite}:${second-munite*60}`
+    second--
     if(second<0){
         clearInterval(timer)
         writeBox.disabled=true;
@@ -53,6 +68,7 @@ while(letters<32){//random word adding
 }
 }
 randomWordAdd();
+wordRow1.children[0].style.backgroundColor="#dddddd"
 //wordRow1.children[0].style.backgroundColor="gray"
 
 function reflesh(){ //reflesh button
@@ -73,22 +89,30 @@ function reflesh(){ //reflesh button
     "ladder", "microphone", "nozzle", "orchid", "parrot", "quartz", 
     "rocket", "saddle", "tomato", "utensil", "vulture", "whistle", "zipper"]
     second=secondNumber
-    counter.textContent=`0:${second}`
+    if(second>=60)
+        munite=parseInt(second/60)
+    else
+        munite=0
+    if((second-munite*60)<10)
+        counter.textContent=`${munite}:0${second-munite*60}`
+    else
+        counter.textContent=`${munite}:${second-munite*60}`
     clearInterval(timer)
     writeBox.value="";
     writeBox.disabled=false
-    pointBox.textContent=0;
+    point=0; 
+    pointBox.textContent=point;
     wordRow1.textContent=""
     let wordsOnScreen=document.querySelectorAll(".word").length
     for(let j=0;j<wordsOnScreen;j++){
         let word = document.querySelector(".word")
         wordRow1.removeChild(word)
-        console.log("deleted words")
     }
     letters=0;
     wordCount=0;
     i=0;
     randomWordAdd();
+    wordRow1.children[0].style.backgroundColor="#dddddd"
 }
 var point = 0;
 pointBox.textContent=0
@@ -99,6 +123,7 @@ function mainLoop(){
         return
     }
     var selectedWord =document.querySelectorAll(".word")
+    //childLoop(selectedWord[i])
     if(second==secondNumber)
         counterLoopFunction();
     //IF CORRECT
@@ -124,9 +149,20 @@ function mainLoop(){
             i=0;
             randomWordAdd();
         }
+        if(i!=selectedWord.length)
+            document.querySelectorAll(".word")[i].style.backgroundColor="#dddddd"
     }
-    // else
-    //     selectedWord[i].style.backgroundColor="gray"
-    console.log(wordCount)
 }
+// var streak=true
+// function childLoop(word){
+//     let wordString=word.textContent
+//     let writeBoxLetter=writeBox.value
+//     word.split("")
+//     console.log(word)
+//     for(let i=0;i<writeBoxLetter.length;i++){
+//         if(writeBoxLetter[i]==wordString[i]){
+            
+//         }
+//     }
+// }
 writeBox.addEventListener('input',mainLoop)
